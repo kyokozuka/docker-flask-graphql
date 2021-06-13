@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+    mysql:
+        container_name: flask-graphql-db
+        build: 
+            context: ./db
+            dockerfile: Dockerfile
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: sample_db
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+            TZ: 'Asia/Tokyo'
+        volumes:
+            - ./db/db:/docker-entrypoint-initdb.d  #初期データ
+        ports:
+            - '3306:3306'
+        networks: 
+            - app-tier
+    
+    api:
+        container_name: flask-graphql-api
+        build: 
+            context: ./api
+            dockerfile: Dockerfile
+        volumes:
+          -  ./api:/app
+        ports:
+            - '5000:5000'
+        links:
+            - mysql
+        tty: true
+        networks: 
+            - app-tier
+
+networks:
+    app-tier:
+        driver: bridge
