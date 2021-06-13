@@ -1,8 +1,8 @@
 # flask/graphqlによるCRUD機能(API側)
 
 ## 環境
-python 3.9
-mysql 5.7
+- python 3.9
+- mysql 5.7
 
 ### ライブラリ
 graphql: ariadne
